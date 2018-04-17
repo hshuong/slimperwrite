@@ -35,7 +35,7 @@ namespace slimperwrite
                 for (int k = 0; k < loaibaocao.Length; k++)
                 {
                     string loai = loaibaocao[k];
-                    string html = File.ReadAllText(path + "\\vic\\vic_" + loai + "_2017_IN_YEAR.html");
+                    string html = File.ReadAllText(path + "\\bvh\\bvh_" + loai + "_2017_IN_YEAR.html");
                     var document = parser.Parse(html);
                     var tensolieu = document.QuerySelectorAll("table table tbody tr td:nth-child(1) div");
                     var solieu1 = document.QuerySelectorAll("table table tbody tr td:nth-child(2) div");
@@ -133,6 +133,8 @@ namespace slimperwrite
         public static void RunSlimpertowritefile(string path, string thamsocacsymbol)
         {
             string[] symbols = new string[] { "hbc", "hpg" };
+            string[] symbolschuaco = new string[] {};
+            int themcongty = 0;
             // kiem tra co trong csdl chua, chua co moi chay
             if (thamsocacsymbol.Length > 0)
             {
@@ -148,7 +150,39 @@ namespace slimperwrite
             
             // sua lai tham so, da loai bo cac symbol da co trong database
             thamsocacsymbol = string.Join(",", symbols);
-            if (thamsocacsymbol.Length > 0) {
+            int cocongtyroi = 0;
+            // kiem tra cac cong ty trong danh sach yeu cau xem
+            // da co trong co so du lieu chua.
+            for (int j = 0; j < symbols.Length; j++)
+            {
+
+                // chi doc cac file nhap vao tu tham so
+                // truoc khi kiem tra co cong ty, khoi tao lai bien cocongtyroi = 1
+                cocongtyroi = 1; // de huy ket qua da tao cong ty o buoc j truoc do
+                                 // kiem tra thong tin cong ty, neu co thi khong lam gi, neu chua co thi tao ra cong ty moi
+                using (NpgsqlConnection conncheckexist = new NpgsqlConnection("Server=localhost; Port=5432; User Id=postgres; Password=123456; Database=financial"))
+                {
+                    conncheckexist.Open();
+                    NpgsqlCommand commandcheckexist = new NpgsqlCommand("SELECT id, name FROM company where Name = '" + symbols[j] + "'", conncheckexist);
+                    NpgsqlDataReader readercheckexist = commandcheckexist.ExecuteReader();
+
+                    if (readercheckexist.HasRows)
+                    {
+                        while (readercheckexist.Read())
+                        {
+                            cocongtyroi = Int32.Parse(readercheckexist[0].ToString());
+                            //do whatever you like
+                            if (cocongtyroi == 0) // chua co cong ty thi tao dua vao danh sach moi gom
+                            // nhung cong ty chua co
+                            {
+                                symbolschuaco[themcongty++] = readercheckexist[1].ToString();
+                            }
+                        }
+                    }
+                    conncheckexist.Close();
+                }
+            }
+            if (symbolschuaco.Length > 0) {
                 // Comment cac dong sau de khong chay slimerjs
                 Process proc = null;
                 //string _batDir = string.Format(@"I:\web load\slimerjs-1.0.0\");
@@ -156,14 +190,14 @@ namespace slimperwrite
                 proc = new Process();
                 proc.StartInfo.WorkingDirectory = _batDir;
                 proc.StartInfo.FileName = "slimerjs.bat";
-                proc.StartInfo.Arguments = "nhieuwebnhieuquy.js " + thamsocacsymbol;
+                proc.StartInfo.Arguments = "nhieuwebnhieuquy.js " + symbolschuaco;
                 proc.StartInfo.CreateNoWindow = false;
                 proc.Start();
                 proc.WaitForExit();
                 //ExitCode = proc.ExitCode;
                 proc.Close();
                 // Comment cac dong tren de khong chay slimerjs
-                int cocongtyroi = 0;
+                
                 int statementid = 1;
                 int startstatementid = 0;
                 int loaicongty = 1;

@@ -21,9 +21,14 @@ namespace slimperwrite
         {
             if (txtBoxSymbolsList.TextLength > 0)
             {
+                // home
                 //Program.getFileNames(@"I:\web load\slimerjs-1.0.0\", txtBoxSymbolsList.Text);
-                Program.RunSlimpertowritefile(@"I:\web load\slimerjs-1.0.0\", txtBoxSymbolsList.Text);
+                // office
+                Program.RunSlimpertowritefile(@"G:\webload\slimerjs-1.0.0\", txtBoxSymbolsList.Text);
+                // home
                 //Program.CreateRowNameInStatementRowTable(@"I:\web load\slimerjs-1.0.0\");
+                // office
+                //Program.CreateRowNameInStatementRowTable(@"G:\webload\slimerjs-1.0.0\");
             }
             else
             {
