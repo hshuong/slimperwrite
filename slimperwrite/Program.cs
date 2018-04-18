@@ -35,7 +35,7 @@ namespace slimperwrite
                 for (int k = 0; k < loaibaocao.Length; k++)
                 {
                     string loai = loaibaocao[k];
-                    string html = File.ReadAllText(path + "\\bvh\\bvh_" + loai + "_2017_IN_YEAR.html");
+                    string html = File.ReadAllText(path + "\\vnd\\vnd_" + loai + "_2017_IN_YEAR.html");
                     var document = parser.Parse(html);
                     var tensolieu = document.QuerySelectorAll("table table tbody tr td:nth-child(1) div");
                     var solieu1 = document.QuerySelectorAll("table table tbody tr td:nth-child(2) div");
@@ -60,6 +60,10 @@ namespace slimperwrite
                     if (loai == "bang-can-doi-ke-toan") { 
                         switch (tensolieu.Length)
                         {
+                            case 123:
+                                Console.WriteLine("Cong ty loai thuong");
+                                loaicongty = 1;
+                                break;
                             case 80:
                                 Console.WriteLine("Ngan hang");
                                 loaicongty = 2;
@@ -68,11 +72,10 @@ namespace slimperwrite
                                 Console.WriteLine("Cong ty bao hiem");
                                 loaicongty = 3;
                                 break;
-                            case 123:
-                                Console.WriteLine("Cong ty loai thuong");
-                                loaicongty = 1;
+                            case 163:
+                                Console.WriteLine("Cong ty chung khoan");
+                                loaicongty = 4;
                                 break;
-
                         }
                     }
                     int thutucuastatementrow = 0;
@@ -182,7 +185,7 @@ namespace slimperwrite
                 //ExitCode = proc.ExitCode;
                 proc.Close();
                 // Comment cac dong tren de khong chay slimerjs
-                
+
                 int statementid = 1;
                 int startstatementid = 0;
                 int loaicongty = 1;
@@ -268,6 +271,10 @@ namespace slimperwrite
                         {
                             switch (tensolieu.Length)
                             {
+                                case 123:
+                                    Console.WriteLine("Cong ty loai thuong");
+                                    loaicongty = 1;
+                                    break;
                                 case 80:
                                     Console.WriteLine("Ngan hang");
                                     loaicongty = 2;
@@ -276,11 +283,10 @@ namespace slimperwrite
                                     Console.WriteLine("Cong ty bao hiem");
                                     loaicongty = 3;
                                     break;
-                                case 123:
-                                    Console.WriteLine("Cong ty loai thuong");
-                                    loaicongty = 1;
+                                case 163:
+                                    Console.WriteLine("Cong ty chung khoan");
+                                    loaicongty = 4;
                                     break;
-
                             }
                             // update bang cong ty ve loai cong ty
                             using (NpgsqlConnection conn = new NpgsqlConnection("Server=localhost; Port=5432; User Id=postgres; Password=123456; Database=financial"))
@@ -347,15 +353,21 @@ namespace slimperwrite
                                     var namorquy = datebyyear[m].TextContent.Trim();
                                     // neu co thoi gian moi insert vao co so du lieu
                                     // vi co cot khong co gia tri
-                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty ==1 && i == 54)//71 bao hiem, 72 ngan hang   
+                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty ==1 && i == 54)//54 cong ty thuong
                                     {
                                         break;
                                     }
-                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 2 && i == 72)//71 bao hiem, 72 ngan hang   
+                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 2 && i == 72)//72 ngan hang   
+                                      // 72 la length cua document.querySelectorAll("table table tbody tr td:nth-child(1)") -1
                                     {
                                         break;
                                     }
-                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 3 && i == 71)//71 bao hiem, 72 ngan hang   
+                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 3 && i == 71)//71 bao hiem. 
+                                        // 71 la length cua document.querySelectorAll("table table tbody tr td:nth-child(1)") -1
+                                    {
+                                        break;
+                                    }
+                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 4 && i == 165)
                                     {
                                         break;
                                     }
