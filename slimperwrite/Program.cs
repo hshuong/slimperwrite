@@ -171,20 +171,20 @@ namespace slimperwrite
             if (symbolschuaco.Length > 0) {
                 // sua lai tham so, da loai bo cac symbol da co trong database
                 thamsocacsymbol = string.Join(",", symbolschuaco);
-                // Comment cac dong sau de khong chay slimerjs
-                Process proc = null;
-                //string _batDir = string.Format(@"I:\web load\slimerjs-1.0.0\");
-                string _batDir = path;
-                proc = new Process();
-                proc.StartInfo.WorkingDirectory = _batDir;
-                proc.StartInfo.FileName = "slimerjs.bat";
-                proc.StartInfo.Arguments = "nhieuwebnhieuquy.js " + thamsocacsymbol;
-                proc.StartInfo.CreateNoWindow = false;
-                proc.Start();
-                proc.WaitForExit();
-                //ExitCode = proc.ExitCode;
-                proc.Close();
-                // Comment cac dong tren de khong chay slimerjs
+                //// Comment cac dong sau de khong chay slimerjs
+                //Process proc = null;
+                ////string _batDir = string.Format(@"I:\web load\slimerjs-1.0.0\");
+                //string _batDir = path;
+                //proc = new Process();
+                //proc.StartInfo.WorkingDirectory = _batDir;
+                //proc.StartInfo.FileName = "slimerjs.bat";
+                //proc.StartInfo.Arguments = "nhieuwebnhieuquy.js " + thamsocacsymbol;
+                //proc.StartInfo.CreateNoWindow = false;
+                //proc.Start();
+                //proc.WaitForExit();
+                ////ExitCode = proc.ExitCode;
+                //proc.Close();
+                //// Comment cac dong tren de khong chay slimerjs
 
                 int statementid = 1;
                 int startstatementid = 0;
@@ -265,7 +265,7 @@ namespace slimperwrite
                                 break;
 
                         }
-                        Console.WriteLine("Bao cao ve " + loaibaocao);
+                        Console.WriteLine("Bao cao ve " + loaibaocao + " cua cong ty " + symbolschuaco[j]);
                         // cap nhat bang cong ty ve loai cong ty
                         if (loaibaocao == "bang-can-doi-ke-toan")
                         {
@@ -367,7 +367,7 @@ namespace slimperwrite
                                     {
                                         break;
                                     }
-                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 4 && i == 165)
+                                    if (loaibaocao == "bao-cao-luu-chuyen-tien-te" && loaicongty == 4 && i == 162)
                                     {
                                         break;
                                     }
